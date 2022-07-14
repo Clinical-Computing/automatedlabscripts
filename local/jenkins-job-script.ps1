@@ -1,4 +1,4 @@
-﻿Import-Module -Name AutomatedLab -Recurse -Force SilentlyContinue
+﻿Import-Module -Name AutomatedLab -Force SilentlyContinue
 
 try {
     Import-Lab -Name $env:COMPUTERNAME
