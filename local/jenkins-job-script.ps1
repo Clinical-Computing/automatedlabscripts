@@ -1,4 +1,4 @@
-﻿Import-Module -Name AutomatedLab -PromptForChoice 'Y'
+﻿Import-Module -Name AutomatedLab -Verbose
 
 try {
     Import-Lab -Name $env:COMPUTERNAME
