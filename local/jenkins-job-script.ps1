@@ -1,4 +1,4 @@
-﻿Import-Module -Name AutomatedLab -Force -Confirm:$false
+﻿Import-Module -Name AutomatedLab
 
 try {
     Import-Lab -Name $env:COMPUTERNAME
