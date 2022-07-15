@@ -1,5 +1,5 @@
 ﻿#$PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
-Import-Module -Name AutomatedLab -Force -Confirm:$false
+Import-Module -Name AutomatedLab -Force -ArgumentList "Y"
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
