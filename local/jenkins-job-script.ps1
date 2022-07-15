@@ -12,7 +12,8 @@ catch {
 
     #param ([Parameter(Mandatory)]$LabName, [Parameter(Mandatory)]$VMName)
     $LabName = $env:COMPUTERNAME
-    $VMName = ${env:JOB_NAME}
+    #$VMName = ${env:JOB_NAME}
+    $VMName = 'cvweb-latestbuild'
 
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
