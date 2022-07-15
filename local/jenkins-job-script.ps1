@@ -1,5 +1,5 @@
 ﻿$PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
-Import-Module -Name AutomatedLab -Force -NoClobber
+Import-Module -Name AutomatedLab -Force -NoClobber -ArgumentList $PSDefaultParameterValues
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
