@@ -1,4 +1,5 @@
-﻿Import-Module -Name AutomatedLab
+﻿$PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
+Import-Module -Name AutomatedLab
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
