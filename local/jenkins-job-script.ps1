@@ -1,5 +1,6 @@
 ﻿$PSDefaultParameterValues = @{ '*:Force' = $true; '*:Confirm' = $false }
-Import-Module -Name AutomatedLab -Force -NoClobber -ArgumentList $PSDefaultParameterValues
+Set-ExecutionPolicy UnRestricted -Scope Process -Verbose
+Import-Module -Name AutomatedLab -Force -NoClobber -ArgumentList $PSDefaultParameterValues -Verbose
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
