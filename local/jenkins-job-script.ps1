@@ -1,5 +1,5 @@
 ﻿
-Import-Module -Name AutomatedLab -Force -AllowClobber
+Import-Module -Name AutomatedLab -Force -PassThru
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
