@@ -1,5 +1,4 @@
-﻿Disable-LabTelemetry
-Import-Module -Name AutomatedLab -Force
+﻿Import-Module -Name AutomatedLab -Force
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
