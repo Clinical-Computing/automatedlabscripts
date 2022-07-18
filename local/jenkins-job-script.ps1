@@ -28,10 +28,10 @@ catch {
     Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{ SwitchType = 'Internal'; AdapterName = 'Virtual Switch' }
 
     # read all ISOs in the LabSources folder and add the SQL 2019 ISO
-    Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
+    #Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
 
     # define VM
-    Add-LabMachineDefinition -Name $VMName -Memory 2GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows 10 Enterprise Evaluation'
+    Add-LabMachineDefinition -Name $VMName -Memory 2GB -Network $defaultNetworkSwitch -OperatingSystem 'Windows 10 Enterprise Evaluation'
 
     Install-Lab -Verbose
 
