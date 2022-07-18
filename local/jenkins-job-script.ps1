@@ -15,6 +15,8 @@ catch {
     #$VMName = ${env:JOB_NAME}
     $VMName = "CCISSBUILD"
 
+    Get-LabAvailableOperatingSystem
+
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
 
