@@ -1,19 +1,19 @@
 ﻿Import-Module -Name AutomatedLab -Force
 try {
-    Import-Lab -Name $env:COMPUTERNAME
+    Import-Lab -Name CCISSBUILD
 }
 catch {
     Write-Host 'Lab not found!'
-    Write-Host "Creating a new lab $env:COMPUTERNAME"
+    Write-Host "Creating a new lab CCISSBUILD"
     
     #."C:\LabSources\CustomScripts\testscript.ps1" -fileName "TestFile1" -LabName $env:COMPUTERNAME -VMName "${env:JOB_NAME}"
     #."C:\LabSources\CustomScripts\create-new-vm.ps1" -LabName "$env:COMPUTERNAME" -VMName "${env:JOB_NAME}"
 
     #param ([Parameter(Mandatory)]$LabName, [Parameter(Mandatory)]$VMName)
     #$env:COMPUTERNAME
-    $LabName = CCISSBUILD1
+    $LabName = "CCISSBUILD"
     #$VMName = ${env:JOB_NAME}
-    $VMName = CCISSBUILD1
+    $VMName = "CCISSBUILD"
 
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
