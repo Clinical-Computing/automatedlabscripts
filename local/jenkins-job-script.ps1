@@ -11,9 +11,9 @@ catch {
 
     #param ([Parameter(Mandatory)]$LabName, [Parameter(Mandatory)]$VMName)
     #$env:COMPUTERNAME
-    $LabName = CCISSBUILD
+    $LabName = CCISSBUILD1
     #$VMName = ${env:JOB_NAME}
-    $VMName = CCISSBUILD
+    $VMName = CCISSBUILD1
 
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
