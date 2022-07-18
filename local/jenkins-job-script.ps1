@@ -1,5 +1,4 @@
-﻿
-Import-Module -Name AutomatedLab -Force -PassThru
+﻿Import-Module -Name AutomatedLab -Force
 try {
     Import-Lab -Name $env:COMPUTERNAME
 }
