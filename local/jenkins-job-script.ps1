@@ -22,7 +22,7 @@ catch {
     $defaultNetworkSwitch = 'Default Switch'
 
     # create an empty lab template and define where the lab XML files and the VMs will be stored
-    New-LabDefinition -Name $LabName -DefaultVirtualizationEngine HyperV #-VmPath S:\AutomatedLab-VMs
+    New-LabDefinition -Name $LabName -DefaultVirtualizationEngine HyperV -VmPath C:\AutomatedLab-VMs
 
     #make the network definition
     Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{ SwitchType = 'Internal'; AdapterName = 'Virtual Switch' }
