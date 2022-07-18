@@ -10,9 +10,10 @@ catch {
     #."C:\LabSources\CustomScripts\create-new-vm.ps1" -LabName "$env:COMPUTERNAME" -VMName "${env:JOB_NAME}"
 
     #param ([Parameter(Mandatory)]$LabName, [Parameter(Mandatory)]$VMName)
-    $LabName = $env:COMPUTERNAME
+    #$env:COMPUTERNAME
+    $LabName = CCISSBUILD
     #$VMName = ${env:JOB_NAME}
-    $VMName = $env:COMPUTERNAME
+    $VMName = CCISSBUILD
 
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
