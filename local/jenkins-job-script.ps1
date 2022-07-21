@@ -45,11 +45,23 @@ catch {
 
     Checkpoint-LabVM -ComputerName $VMName -SnapshotName 'After creating a new VM with win10, jdk8 and SQLServer2019'
 
-    $CVLocalPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb.msi"
+    # copy cvweb from cciss-build
+
+    #param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
+    
+    #$sourceFolderPath = "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVwebVersion\Install"
+    $sourceFolderPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup"
+    $destinationFolderPath = "C:\cvwebSetup"
+ 
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose 
+
+    
+    #$CVLocalPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb.msi"
+    $CVLocalPath = "C:\cvwebSetup\cvweb.msi"
 
     $CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
     
-    if(Test-Path -Path "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb_x64.mst") {
+    if(Test-Path -Path "C:\cvwebSetup\cvweb_x64.mst") {
         $CVTransforms = "TRANSFORMS=cvweb_x64.mst;"    
     }
 
