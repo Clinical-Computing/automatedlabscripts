@@ -50,7 +50,7 @@ catch {
     #param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
     
     #$sourceFolderPath = "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVwebVersion\Install"
-    $sourceFolderPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup"
+    $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
     $destinationFolderPath = "C:\cvwebSetup"
  
     Copy-LabFileItem -Path $sourceFolderPath -ComputerName 'cciss-build' -DestinationFolderPath $destinationFolderPath -Recurse -Verbose 
@@ -61,7 +61,7 @@ catch {
 
     $CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
     
-    if(Test-Path -Path "C:\cvwebSetup\cvweb_x64.mst") {
+    if(Test-Path -Path "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup\cvweb_x64.mst") {
         $CVTransforms = "TRANSFORMS=cvweb_x64.mst;"    
     }
 
