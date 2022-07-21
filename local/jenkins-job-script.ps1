@@ -53,7 +53,7 @@ catch {
     $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
     $destinationFolderPath = "C:\cvwebSetup"
  
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName 'cciss-build' -DestinationFolderPath $destinationFolderPath -Recurse -Verbose 
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName 'CCISSBUILD' -DestinationFolderPath $destinationFolderPath -Recurse -Verbose 
 
     
     #$CVLocalPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb.msi"
