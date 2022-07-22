@@ -25,7 +25,7 @@ catch {
     New-LabDefinition -Name $LabName -DefaultVirtualizationEngine HyperV -VmPath C:\AutomatedLab-VMs
 
     #make the network definition
-    Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{ SwitchType = 'External'; AdapterName = 'vEthernet' }
+    Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{ SwitchType = 'Internal'; AdapterName = 'vEthernet' }
 
     # read all ISOs in the LabSources folder and add the SQL 2019 ISO
     #Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
