@@ -50,10 +50,13 @@ catch {
     #param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
     
     #$sourceFolderPath = "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVwebVersion\Install"
+
+    Import-Lab -Name 'CCISSBUILD'
+
     $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
-    $destinationFolderPath = "C:\cvwebSetup"
+    $destinationFolderPath = "C:\cvweb\"
  
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName 'CCISSBUILD' -DestinationFolderPath $destinationFolderPath -Recurse -Verbose 
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName 'CCISSBUILD' -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
 
     
     #$CVLocalPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb.msi"
