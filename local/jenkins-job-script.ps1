@@ -60,7 +60,7 @@ catch {
 
     
     #$CVLocalPath = "D:\Jenkins\latestbuild\cvWeb\Deployment\build\setup\cvweb.msi"
-    $CVLocalPath = "C:\cvwebSetup\cvweb.msi"
+    $CVLocalPath = "C:\cvweb\setup\cvweb.msi"
 
     $CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
     
