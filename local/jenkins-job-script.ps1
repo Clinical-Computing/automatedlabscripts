@@ -78,7 +78,7 @@ catch {
 
     # copy cvweb from cciss-build
     
-    Import-Lab -Name $VMName
+    Import-Lab -Name $LabName
  
     Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
     
