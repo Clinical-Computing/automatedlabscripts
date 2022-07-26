@@ -1,6 +1,6 @@
 ﻿Import-Module -Name AutomatedLab -Force
 
-$LabName = $env:COMPUTERNAME
+$LabName = $env:COMPUTERNAME.Replace('-', '')
 $VMName = "CCISSBUILD"
 $VMTempDirectory = 'C:\temp'
 $VMCVWebDirectory = 'C:\cvweb\setup'
