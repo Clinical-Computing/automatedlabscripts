@@ -9,9 +9,18 @@ $destinationFolderPath = "C:\cvweb\"
 $CVLocalPath = "C:\cvweb\setup\cvweb.msi"
 $CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
 
+$lab = ""
 try {
     Import-Lab -Name $LabName
-    
+    $lab = Get-Lab
+}
+
+catch {
+    Write-Host 'Lab not found!'
+    Write-Host "Creating a new lab CCISSBUILD"
+}
+
+if ($lab -and $lab.Name -eq 'CCISSBUILD') {
     Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\cvweb\setup' -Recurse -Force}  -UseLocalCredential -Verbose
 
     # copy latestbuild of cvweb from cciss-build
@@ -43,12 +52,8 @@ try {
     Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
 
     Checkpoint-LabVM -ComputerName $VMName -SnapshotName "After upgrade cvweb to latestbuild"
-
 }
-catch {
-    Write-Host 'Lab not found!'
-    Write-Host "Creating a new lab CCISSBUILD"
-    
+else {
     # default network switch for internet conectivity
     $defaultNetworkSwitch = 'Default Switch'
 
@@ -94,5 +99,4 @@ catch {
     Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
 
     Checkpoint-LabVM -ComputerName $VMName -SnapshotName "After installation of cvweb latestbuild"
-
 }
