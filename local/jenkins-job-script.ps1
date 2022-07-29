@@ -80,6 +80,7 @@ $cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or n
 
 if($cvweb) {
     
+    Write-Host "cvweb $cvweb.Version found!"
 
     ##-- create java options on vm --##
         
@@ -103,18 +104,24 @@ if($cvweb) {
     # remove temp directory on vm
     Invoke-LabCommand -ActivityName 'Removing C:\temp' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\temp' -Recurse -Force}  -UseLocalCredential 
 
+    # define log file name with 
+    $logFileName = "`"C:\DeployDebug\cvweb $cvweb.Version $(Get-Date -Format "yyyy-MM-dd").log`""
+
     # define parameters for upgrade of cvweb
     $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048 UPGRADEOPTION=upgrade"
 }
 else {
+
+    # define log file name with 
+    $logFileName = "`"C:\DeployDebug\cvweb $cvweb.Version $(Get-Date -Format "yyyy-MM-dd").log`""
+
     # define parameters for installation of cvweb
     $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048"
 }
 
 
 
-# define log file name with 
-$logFileName = "`"C:\DeployDebug\cvweb $cvweb.Version $(Get-Date -Format "yyyy-MM-dd").log`""
+
 
 # install cvweb    
 Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
