@@ -33,7 +33,12 @@ if($lab.Name -eq $LabName -and $vm.Name -eq $VMName) {
     Write-Host "$VMName found and hosted at $LabName"
 
     # remove old copy of cvweb setup from vm
-    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\cvweb\setup' -Recurse -Force}  -UseLocalCredential
+    $sb = {
+        if(Test-Path -Path "C:\cvweb\setup") {
+            Remove-Item 'C:\cvweb\setup' -Recurse -Force
+        }
+    }
+    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock $sb  -UseLocalCredential
 
     # copy latestbuild of cvweb setup from cciss-build
     Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
