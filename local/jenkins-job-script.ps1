@@ -7,51 +7,30 @@ $VMCVWebDirectory = 'C:\cvweb\setup'
 $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
 $destinationFolderPath = "C:\cvweb\"
 $CVLocalPath = "C:\cvweb\setup\cvweb.msi"
-$CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
 
-$lab = ""
+if(Test-Path -Path "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup\cvweb_x64.mst") {
+    $CVTransforms = "TRANSFORMS=cvweb_x64.mst;"    
+}
+else {
+    $CVTransforms = "TRANSFORMS=:cvweb_x64.mst;"
+}
+
 try {
+    # try to import lab
     Import-Lab -Name $LabName
+    
+    # get lab name
     $lab = Get-Lab
+    
+    # get vm name
+    $vm = Get-LabVM
 }
-
 catch {
-    Write-Host 'Lab not found!'
-    Write-Host "Creating a new lab CCISSBUILD"
+    Write-Host "$LabName Lab not found!"
 }
 
-if ($lab -and $lab.Name -eq 'CCISSBUILD') {
-    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\cvweb\setup' -Recurse -Force}  -UseLocalCredential -Verbose
-
-    # copy latestbuild of cvweb from cciss-build
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
-
-    # create java options on vm
-    New-Item -ItemType Directory -Force -Path $VMTempDirectory
-    $sourceFolderPath = "C:\LabSources\Tools\tomcatJavaOptions.jar"
-    $destinationFolderPath = $VMTempDirectory
-    # copy tomacatJavaOptions.jar from cciss-hyper to vm
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Verbose 
-    
-    $logFileName = "`"C:\DeployDebug\tomcatJavaOptions $CVwebVersion $(Get-Date -Format "yyyy-MM-dd").log`""
-
-    Invoke-LabCommand -ActivityName 'creating tomcat java options on vm' -ComputerName $VMName -ScriptBlock { Start-Process -FilePath (Get-Command -All java).Source -WorkingDirectory 'C:\temp' -ArgumentList '-jar tomcatJavaOptions.jar' -RedirectStandardOutput 'C:\DeployDebug\tomcatJavaOptions_stdout.log' -RedirectStandardError 'C:\DeployDebug\tomcatJavaOptions_stderror.log' -Verbose  }
-    Invoke-LabCommand -ActivityName 'Removing C:\temp' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\temp' -Recurse -Force}  -UseLocalCredential -Verbose
-
-    # upgrade cvweb on vm
-    
-    if(Test-Path -Path "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup\cvweb_x64.mst") {
-        $CVTransforms = "TRANSFORMS=cvweb_x64.mst;"    
-    }
-    
-    $logFileName = "`"C:\DeployDebug\cvweb latestbuild upgrade $CVwebVersion $(Get-Date -Format "yyyy-MM-dd").log`""
-
-    $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048 UPGRADEOPTION=upgrade"
-    
-    # install cvweb    
-    Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
-
-    Checkpoint-LabVM -ComputerName $VMName -SnapshotName "After upgrade cvweb to latestbuild"
+if($lab.Name -eq $LabName -and $vm.Name -eq $VMName) {
+    Write-Host "$VMName if found and hosted at $LabName"
 }
 else {
     # default network switch for internet conectivity
@@ -79,24 +58,55 @@ else {
 
     Show-LabDeploymentSummary -Detailed
 
-    Checkpoint-LabVM -ComputerName $VMName -SnapshotName 'After creating a new VM with win10, jdk8 and SQLServer2019'
-
-    # copy cvweb from cciss-build
-    
-    Import-Lab -Name $LabName
- 
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
-    
-    if(Test-Path -Path "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup\cvweb_x64.mst") {
-        $CVTransforms = "TRANSFORMS=cvweb_x64.mst;"    
-    }
-
-    $logFileName = "`"C:\DeployDebug\cvweb latestbuild $(Get-Date -Format "yyyy-MM-dd").log`""
-
-    $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048"
-
-    # install cvweb    
-    Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
-
-    Checkpoint-LabVM -ComputerName $VMName -SnapshotName "After installation of cvweb latestbuild"
+    # create checkpoint
+    Checkpoint-LabVM -ComputerName $VMName -SnapshotName 'After the installation of win10, jdk8 and SQLServer2019'
 }
+    
+# query for cvweb, either installed or not
+$cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or not' -ComputerName $VMName -ScriptBlock {Get-WmiObject Win32_Product | Select-Object Name, Version | Where-Object {$_.Name -eq 'clinicalvision Server'}}  -UseLocalCredential -PassThru
+
+if($cvweb) {
+    # remove old copy of cvweb setup from vm
+    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\cvweb\setup' -Recurse -Force}  -UseLocalCredential
+
+    ##-- create java options on vm --##
+        
+    # create temp directory on vm
+    New-Item -ItemType Directory -Force -Path $VMTempDirectory
+        
+    # source folder path of tomcatJavaOptions.jar on cciss-hyperv
+    $sourceFolderPath = "C:\LabSources\Tools\tomcatJavaOptions.jar"
+        
+    # destination folder path: 'C:\temp' on vm
+    $destinationFolderPath = $VMTempDirectory
+        
+    # copy tomacatJavaOptions.jar from cciss-hyper to vm
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Verbose 
+
+    #$logFileName = "`"C:\DeployDebug\tomcatJavaOptions $CVwebVersion $(Get-Date -Format "yyyy-MM-dd").log`""
+
+    # execute tomacatJavaOptions.jar on vm
+    Invoke-LabCommand -ActivityName 'creating tomcat java options on vm' -ComputerName $VMName -ScriptBlock { Start-Process -FilePath (Get-Command -All java).Source -WorkingDirectory 'C:\temp' -ArgumentList '-jar tomcatJavaOptions.jar' -RedirectStandardOutput 'C:\DeployDebug\tomcatJavaOptions_stdout.log' -RedirectStandardError 'C:\DeployDebug\tomcatJavaOptions_stderror.log' -Verbose  }
+        
+    # remove temp directory on vm
+    Invoke-LabCommand -ActivityName 'Removing C:\temp' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\temp' -Recurse -Force}  -UseLocalCredential 
+
+    # define parameters for upgrade of cvweb
+    $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048 UPGRADEOPTION=upgrade"
+}
+else {
+    # define parameters for installation of cvweb
+    $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048"
+}
+
+# copy latestbuild of cvweb setup from cciss-build
+Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
+
+# define log file name with 
+$logFileName = "`"C:\DeployDebug\cvweb $cvweb.Version $(Get-Date -Format "yyyy-MM-dd").log`""
+
+# install cvweb    
+Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
+
+# create checkpoint
+Checkpoint-LabVM -ComputerName $VMName -SnapshotName "cvweb $cvweb.Version"
