@@ -119,12 +119,10 @@ else {
     $CVParams = "/qn /log $logFileName DBSERVERNAME=`"$VMName`" MSSQLSERVERNAME=`"$VMName`" CVDOMAIN=Production INSTALLDIR=`"C:\Program Files (x86)\Clinical Computing\cvwebappserver\`" SQLINSTANCE_JTDS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"localhost;integratedSecurity=true`" CREATENEWCVDB.4B175C70_94AB_42E4_B485_1478B3DF7933=1 LOCALEARGS.4B175C70_94AB_42E4_B485_1478B3DF7933=`"-Dcv.locale=ClinicalVisionCore:SystemSettings.UnitedKingdom -Dcv.language=ClinicalVisionCore:SystemSettings.UKEnglish`" CVLANGUAGE=GB UPGRADEOPTION=new MYUSERNAME=`"$VMName\Administrator`" MYPASSWORD=Somepass1 NTDOMAIN=$VMName NTUSER=Administrator $CVTransforms PROCARCHITECTURE=`"x64`" INSTANCEID=default SSLPORT=443 CVINTPORT=8448 JVMMS=1024 JVMMX=2048"
 }
 
-
-
-
-
 # install cvweb    
 Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
+
+$cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or not' -ComputerName $VMName -ScriptBlock {Get-WmiObject Win32_Product | Select-Object Name, Version | Where-Object {$_.Name -eq 'clinicalvision Server'}}  -UseLocalCredential -PassThru
 
 # create checkpoint
 Checkpoint-LabVM -ComputerName $VMName -SnapshotName "cvweb $cvweb.Version"
