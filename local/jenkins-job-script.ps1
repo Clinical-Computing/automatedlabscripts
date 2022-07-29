@@ -37,6 +37,8 @@ if($lab.Name -eq $LabName -and $vm.Name -eq $VMName) {
 
     # copy latestbuild of cvweb setup from cciss-build
     Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
+
+    Get-Job | Wait-Job
 }
 else {
     # default network switch for internet conectivity
