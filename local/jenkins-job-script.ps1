@@ -123,7 +123,7 @@ Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -Comman
 
 Import-lab -Name $LabName -NoValidation
 
-$cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or not' -ComputerName $VMName -ScriptBlock {Get-WmiObject Win32_Product | Select-Object Name, Version | Where-Object {$_.Name -eq 'clinicalvision Server'}}  -UseLocalCredential -PassThru
+$cvweb = Invoke-LabCommand -ActivityName 'Get cvweb version' -ComputerName $VMName -ScriptBlock {Get-WmiObject Win32_Product | Select-Object Name, Version | Where-Object {$_.Name -eq 'clinicalvision Server'}}  -UseLocalCredential -PassThru
 
 Write-Host "cvweb: $cvweb.Version"
 
