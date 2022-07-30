@@ -38,12 +38,11 @@ if($lab.Name -eq $LabName -and $vm.Name -eq $VMName) {
             Remove-Item 'C:\cvweb\setup' -Recurse -Force
         }
     }
-    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock $sb  -UseLocalCredential
+    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock $sb  -UseLocalCredential -Wait
 
     # copy latestbuild of cvweb setup from cciss-build
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose -Wait
 
-    Get-Job | Wait-Job
 }
 else {
     # default network switch for internet conectivity
@@ -94,12 +93,12 @@ if($cvweb) {
     $destinationFolderPath = $VMTempDirectory
         
     # copy tomacatJavaOptions.jar from cciss-hyper to vm
-    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Verbose 
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Verbose -Wait
 
     #$logFileName = "`"C:\DeployDebug\tomcatJavaOptions $CVwebVersion $(Get-Date -Format "yyyy-MM-dd").log`""
 
     # execute tomacatJavaOptions.jar on vm
-    Invoke-LabCommand -ActivityName 'creating tomcat java options on vm' -ComputerName $VMName -ScriptBlock { Start-Process -FilePath (Get-Command -All java).Source -WorkingDirectory 'C:\temp' -ArgumentList '-jar tomcatJavaOptions.jar' -RedirectStandardOutput 'C:\DeployDebug\tomcatJavaOptions_stdout.log' -RedirectStandardError 'C:\DeployDebug\tomcatJavaOptions_stderror.log' -Verbose  }
+    Invoke-LabCommand -ActivityName 'creating tomcat java options on vm' -ComputerName $VMName -ScriptBlock { Start-Process -FilePath (Get-Command -All java).Source -WorkingDirectory 'C:\temp' -ArgumentList '-jar tomcatJavaOptions.jar' -RedirectStandardOutput 'C:\DeployDebug\tomcatJavaOptions_stdout.log' -RedirectStandardError 'C:\DeployDebug\tomcatJavaOptions_stderror.log' -Verbose  } -Wait
         
     # remove temp directory on vm
     #Invoke-LabCommand -ActivityName 'Removing C:\temp' -ComputerName $VMName -ScriptBlock {Remove-Item 'C:\temp' -Recurse -Force}  -UseLocalCredential 
