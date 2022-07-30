@@ -121,6 +121,8 @@ else {
 # install cvweb    
 Install-LabSoftwarePackage -ComputerName $VMName -LocalPath $CVLocalPath -CommandLine $CVParams -Verbose -Timeout 60
 
+Import-lab -Name $LabName -NoValidation
+
 $cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or not' -ComputerName $VMName -ScriptBlock {Get-WmiObject Win32_Product | Select-Object Name, Version | Where-Object {$_.Name -eq 'clinicalvision Server'}}  -UseLocalCredential -PassThru
 
 # create checkpoint
