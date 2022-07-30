@@ -79,7 +79,7 @@ $cvweb = Invoke-LabCommand -ActivityName 'Query for cvweb, either installed or n
 
 if($cvweb) {
     
-    Write-Host "cvweb $cvweb.Version found!"
+    Write-Host $cvweb.Version
 
     ##-- create java options on vm --##
         
@@ -128,4 +128,4 @@ $cvweb = Invoke-LabCommand -ActivityName 'Get cvweb version' -ComputerName $VMNa
 Write-Host "cvweb: $cvweb.Version"
 
 # create checkpoint
-Checkpoint-LabVM -ComputerName $VMName -SnapshotName "cvweb $cvweb.Version"
+Checkpoint-LabVM -ComputerName $VMName -SnapshotName $cvweb.Version
