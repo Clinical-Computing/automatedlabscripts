@@ -38,7 +38,7 @@ if($lab.Name -eq $LabName -and $vm.Name -eq $VMName) {
             Remove-Item 'C:\cvweb\setup' -Recurse -Force
         }
     }
-    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock $sb  -UseLocalCredential -Wait
+    Invoke-LabCommand -ActivityName 'Remove Old cvweb verison' -ComputerName $VMName -ScriptBlock $sb  -UseLocalCredential
 
     # copy latestbuild of cvweb setup from cciss-build
     Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose -Wait
