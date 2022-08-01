@@ -114,6 +114,9 @@ if($cvweb) {
 }
 else {
 
+    # copy latestbuild of cvweb setup from cciss-build
+    Copy-LabFileItem -Path $sourceFolderPath -ComputerName $VMName -DestinationFolderPath $destinationFolderPath -Recurse -Verbose
+
     # define log file name with 
     $logFileName = "`"C:\DeployDebug\cvweb $cvweb.Version $(Get-Date -Format "yyyy-MM-dd").log`""
 
