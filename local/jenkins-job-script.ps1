@@ -58,7 +58,7 @@ else {
     Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
 
     # define VM
-    Add-LabMachineDefinition -Name $VMName -Memory 6GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows 10 Enterprise Evaluation'
+    Add-LabMachineDefinition -Name $VMName -Memory 6GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
 
     Install-Lab -Verbose
 
