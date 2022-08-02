@@ -24,7 +24,8 @@ Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwi
 Install-Lab -Verbose
 
 # grant service logon privilege to the default user
-Invoke-LabCommand -ActivityName 'Grant Service-Logon Privilege to the default user' -ComputerName "$VMName" -FilePath $labSources\CustomScripts\grant_service_logon_privilege.ps1 -Verbose
+#Invoke-LabCommand -ActivityName 'Grant Service-Logon Privilege to the default user' -ComputerName "$VMName" -FilePath $labSources\CustomScripts\grant_service_logon_privilege.ps1 -Verbose
+Enable-LabAutoLogon -ComputerName "$VMName"
     
 #install jdk-8 - x64
 Install-LabSoftwarePackage -ComputerName "$VMName" -Path $labSources\SoftwarePackages\jdk-8u321-windows-x64.exe -CommandLine '/s /log C:\DeployDebug\Java.log /Q' -Verbose
