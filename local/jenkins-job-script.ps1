@@ -74,7 +74,7 @@ else {
     Show-LabDeploymentSummary -Detailed
 
     # create checkpoint
-    Checkpoint-LabVM -ComputerName $VMName -SnapshotName 'After the installation of win10, jdk8 and SQLServer2019'
+    Checkpoint-LabVM -ComputerName $VMName -SnapshotName 'After the installation of WinServer2019, jdk8 and SQLServer2019'
 }
     
 # query for cvweb, either installed or not
