@@ -47,7 +47,7 @@ if($CVWebVersion -eq 'latestbuild') {
 }
 else {
     $sourceFolderPath = "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVwebVersion\Install"
-    $CVLocalPath = "C:\cvwebSetup\$CVwebVersion\Install\cvweb.msi"
+    $CVLocalPath = "C:\cvweb\$CVwebVersion\Install\cvweb.msi"
     $destinationFolderPath = "C:\cvweb\$CVwebVersion"
 
     if(Test-Path -Path "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVwebVersion\Install\cvweb_x64.mst") {
