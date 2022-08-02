@@ -2,6 +2,8 @@ param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
 
 $ccissPath = "\\cciss-file\Product\clinicalvision5\Install\General Availability\$CVWebVersion\Install\cvweb.msi"
 
+Write-Output $ccissPath
+
 $isPathValid = Test-Path -Path $ccissPath
 
 if($isPathValid) {
