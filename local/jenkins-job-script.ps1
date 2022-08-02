@@ -69,7 +69,7 @@ else {
     #Install-LabSoftwarePackage -ComputerName $VMName -Path $labSources\SoftwarePackages\jdk-8u321-windows-x64.exe -CommandLine '/s /log C:\DeployDebug\Java.log /Q' -Verbose
 
     # install open jdk 8
-    Install-LabSoftwarePackage -ComputerName $VMName -Path C:\LabSources\SoftwarePackages\OpenJDK8U-jdk_x64_windows_hotspot_8u342b07.msi  -Verbose
+    Install-LabSoftwarePackage -ComputerName $VMName -Path 'C:\LabSources\SoftwarePackages\OpenJDK8U-jdk_x64_windows_hotspot_8u342b07.msi' -CommandLine '/qn /log C:\DeployDebug\OpenJDK.log' -Verbose
 
     Show-LabDeploymentSummary -Detailed
 
