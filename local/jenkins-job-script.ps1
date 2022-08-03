@@ -1,7 +1,8 @@
 ﻿Import-Module -Name AutomatedLab -Force
 
-$LabName = $env:COMPUTERNAME.Replace('-', '')
-$VMName = "CCISSBUILD"
+#$LabName = $env:COMPUTERNAME.Replace('-', '')
+$LabName = "CVWEB_LATESTBUILD"
+$VMName = "CVWEB_LATESTBUILD"
 $VMTempDirectory = 'C:\temp'
 $VMCVWebDirectory = 'C:\cvweb\setup'
 $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
