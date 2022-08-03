@@ -2,7 +2,7 @@ param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
 
 $LabName = "$VMName$CVwebVersion".Replace(' ', '')
 
-$VMName = LabName
+$VMName = $LabName
 
 Import-Module -Name AutomatedLab -Force
 
