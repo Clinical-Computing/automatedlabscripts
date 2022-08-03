@@ -20,8 +20,10 @@ Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{
 # read all ISOs in the LabSources folder and add the SQL 2019 ISO
 Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SW_DVD9_NTRL_SQL_Svr_Standard_Edtn_2019Dec2019_64Bit_English_OEM_VL_X22-22109.iso
 
+$role = Get-LabMachineRoleDefinition -Role SQLServer2019 -Properties @{Features = 'SQL,Tools'}
+
 # define VM
-Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
+Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -Roles $role -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
 
 Install-Lab -Verbose
 
