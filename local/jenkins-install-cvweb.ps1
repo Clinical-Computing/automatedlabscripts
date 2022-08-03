@@ -25,7 +25,7 @@ Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{
 # define VM
 Add-LabDiskDefinition -Name 'System' -DiskSizeInGb 100 -Label 'System' -DriveLetter C -AllocationUnitSize 64kb
 Add-LabDiskDefinition -Name 'Data' -DiskSizeInGb 100 -Label 'Data' -DriveLetter C -AllocationUnitSize 64kb
-Add-LabMachineDefinition -Name $VMName -Memory 6GB -DiskName 'System, Data' -Network $defaultNetworkSwitch -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
+Add-LabMachineDefinition -Name $VMName -Memory 6GB -Disk 'System, Data' -Network $defaultNetworkSwitch -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
 #Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
 
 Install-Lab -Verbose
