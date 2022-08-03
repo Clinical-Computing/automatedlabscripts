@@ -1,10 +1,12 @@
 param ([Parameter(Mandatory)]$VMName, [Parameter(Mandatory)]$CVwebVersion)
 
-$VMName = "$VMName $CVwebVersion".Replace(' ', '')
+$LabName = "$VMName$CVwebVersion".Replace(' ', '')
+
+$VMName = LabName
 
 Import-Module -Name AutomatedLab -Force
 
-$LabName = $env:COMPUTERNAME.Replace('-', '')
+#$LabName = $env:COMPUTERNAME.Replace('-', '')
 
 # default network switch for internet conectivity
 $defaultNetworkSwitch = 'Default Switch'
@@ -19,7 +21,7 @@ Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{
 #Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
 
 # define VM
-Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
+Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
 
 Install-Lab -Verbose
 
