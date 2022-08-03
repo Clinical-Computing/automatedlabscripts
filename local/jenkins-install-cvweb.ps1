@@ -18,7 +18,7 @@ New-LabDefinition -Name $LabName -DefaultVirtualizationEngine HyperV -VmPath C:\
 Add-LabVirtualNetworkDefinition -Name $defaultNetworkSwitch -HyperVProperties @{ SwitchType = 'Internal'; AdapterName = 'vEthernet' }
 
 # read all ISOs in the LabSources folder and add the SQL 2019 ISO
-Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SQLServer2019-x64-ENU.iso
+Add-LabIsoImageDefinition -Name SQLServer2019 -Path $labSources\ISOs\SW_DVD9_NTRL_SQL_Svr_Standard_Edtn_2019Dec2019_64Bit_English_OEM_VL_X22-22109.iso
 
 # define VM
 Add-LabMachineDefinition -Name "$VMName" -Memory 6GB -Network $defaultNetworkSwitch -Roles SQLServer2019 -OperatingSystem 'Windows Server 2019 Standard (Desktop Experience)'
