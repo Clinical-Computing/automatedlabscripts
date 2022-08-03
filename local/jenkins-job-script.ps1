@@ -2,7 +2,7 @@
 
 #$LabName = $env:COMPUTERNAME.Replace('-', '')
 $LabName = "CVWEBLATESTBUILD"
-$VMName = "CVWEBLATESTBUILD"
+$VMName = "CVWEBLATESTBUILDVM"
 $VMTempDirectory = 'C:\temp'
 $VMCVWebDirectory = 'C:\cvweb\setup'
 $sourceFolderPath = "\\cciss-build\latestbuild\cvWeb\Deployment\build\setup"
